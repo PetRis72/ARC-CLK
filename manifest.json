@@ -1,0 +1,19 @@
+{
+  "name": "ARC-CLK",
+  "short_name": "ARC-CLK",
+  "description": "A financial and news web application with localized clock and market tickers.",
+  "start_url": "/index.html",
+  "display": "standalone", 
+  "icons": [
+    {
+      "src": "icon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "icon256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

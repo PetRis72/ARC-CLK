@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Content Security Policy (meta fallback; server headers preferred) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; connect-src 'self' https://api.binance.com https://api.exchangerate.host https://api.rss2json.com https://api.allorigins.win https://ipapi.co https://ok.surf https://*.googleapis.com https://news.google.com; img-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+    <title>ARC-CLK | Financial & News Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <link rel="manifest" href="manifest.json">
+</head>
+<script>
+  if ('service worker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
+<body>
+
+    <div id="mode-toggle" class="utility-btn">
+        <div id="cube-icon" class="cube-switch"></div>
+    </div>
+
+    <div id="toolbox-toggle" class="hamburger">
+        <span></span><span></span><span></span>
+    </div>
+
+    <main class="main-content">
+        <div class="container">
+            <div id="ampm-display"></div>
+            <div id="time" class="row"></div>
+            <div id="day" class="row"></div>
+            <div id="date" class="row"></div>
+        </div>
+    </main>
+
+    <div class="bottom-area">
+        <div id="market-cards-container">
+            <div class="market-track" id="market-track">
+                <div class="market-card"><span>LOADING MARKET DATA...</span></div>
+            </div>
+        </div>
+
+        <div id="local-news-area">
+            <span class="local-label">LOCAL FEED</span>
+            <div class="marquee-container">
+                <div id="local-marquee"><span id="local-content">SYNCING REGIONAL...</span></div>
+            </div>
+        </div>
+
+        <div id="hot-news-area">
+            <span class="hot-label">HOT NEWS</span>
+            <div class="marquee-container">
+                <div id="hot-marquee"><span id="hot-content">LOADING BREAKING...</span></div>
+            </div>
+        </div>
+
+        <div class="news-container">
+            <div id="news-marquee"><span id="news-content">CONNECTING...</span></div>
+        </div>
+        
+        <footer>
+            BY: PETER RISBERG ©2026 | NORWAY
+            <img src="https://flagcdn.com/w20/no.png" 
+            srcset="https://flagcdn.com/w40/no.png 2x" 
+            width="20" 
+            alt="Norway" 
+            class="footer-flag">
+            <span class="footer-sep">|</span>
+            <a id="privacy-link" href="#" class="footer-link">Privacy &amp; Cookies</a>
+        </footer>
+    </div>
+    
+    <!-- Privacy modal (in-page, no extra files) -->
+    <div id="privacy-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="privacy-title">
+        <div class="modal-content">
+            <button id="privacy-close" class="modal-close" aria-label="Close privacy dialog">×</button>
+            <h2 id="privacy-title">Privacy & Cookies</h2>
+            <p>This site uses minimal data to provide localized content and preferences.</p>
+            <ul>
+                <li><strong>Purpose:</strong> Estimate region for local news and timezone, and save theme preference if you accept.</li>
+                <li><strong>Data used:</strong> IP-based geo lookup (third-party) only if you accept; localStorage used to remember your explicit consent choice.</li>
+                <li><strong>Advertising:</strong> If you accept, third-party ad networks (e.g., Google AdSense) may load scripts and cookies to display ads and serve personalized ads. Ads will only be loaded after you accept consent.</li>
+                <li><strong>Third parties:</strong> ipapi.co, api.rss2json.com, ok.surf, api.binance.com, flagcdn.com (images), Google Ad services (if enabled).</li>
+                <li><strong>No tracking by default:</strong> No analytics or profiling is active unless you opt in via consent or external ad networks request it.</li>
+                <li><strong>External links:</strong> News headlines are fetched from RSS feeds, and links to external sources.</li>
+                <li><strong>Third parties links:</strong> Privacy policy is not applicable to external sites.</li>
+            </ul>
+            <p>To opt out immediately, click the <strong>Opt-out Now</strong> button below — the site will clear local data and caches for you. No further action is needed.</p>
+            <p>If you find this page problematic, <strong>Opt the fuck OUT Now!</strong></p>
+            <p>Are you a hacker or a script kiddie? <strong>Don't!</strong> There are no secret shit here. You'll find the code on Git, go and contribute!</p>
+            <p>Compliance notes: If you plan to publish with advertising, ensure you provide a full privacy policy page, an <code>ads.txt</code> file for ad inventory, and follow GDPR/CCPA requirements for consent and data portability.</p>
+            
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+                <button id="privacy-optout" class="btn">Opt-out Now</button>
+            </div>
+        </div>
+    </div>
+    <div id="toolbox">
+        <div class="drawer-content">
+            <hr style="border:0; border-top:1px solid rgba(255,255,255,0.1); margin:6px 0 15px;">
+            <label style="font-weight:bold;">FEATURES</label>
+            <div style="display:flex;flex-direction:column;gap:8px;margin:8px 0 12px;" aria-hidden="true">
+                <label><input type="checkbox" id="toggle-market" checked> Wall Street Ticker</label>
+                <!--<label><input type="checkbox" id="toggle-local"> Local Feed</label>-->
+                <label><input type="checkbox" id="toggle-hot" checked> Hot News</label>
+                <label><input type="checkbox" id="toggle-news" checked> News Splash</label>
+            </div>
+            <div style="margin-top:6px;">
+                <a href="#" id="sources-link" class="footer-link">Sources</a>
+            </div>
+            <div style="margin-top:6px;">
+                <a href="#" id="about-link" class="footer-link">About</a>
+            </div>
+            <button id="close-btn">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- Ad slot (placeholder). Ads will only be shown after user consent. -->
+    <div id="ad-slot" class="ad-slot" aria-hidden="true" role="region" aria-label="Advertisement placeholder"></div>
+
+    <!-- Blocking consent splash shown on first visit to request consent before features load -->
+    <div id="consent-splash" class="modal" aria-hidden="true" role="dialog" aria-labelledby="consent-title">
+        <div class="modal-content">
+            <h2 id="consent-title">Privacy & Ads Consent</h2>
+            <p>This site can use IP-based region lookup to provide localized news, currency info, and to load advertising (Google Ads). Please choose whether you accept:</p>
+            <ul>
+                <li><strong>Accept:</strong> Enable localized news and advertising. A minimal consent preference will be saved.</li>
+                <li><strong>Decline:</strong> Disable localized features and advertising. Nothing will be stored on your device; temporary data and caches will be cleared.</li>
+            </ul>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+                <button id="splash-decline" class="btn btn-muted">Decline</button>
+                <button id="splash-accept" class="btn">Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Consent banner -->
+    <div id="consent-banner" class="consent-banner" role="dialog" aria-live="polite" aria-hidden="true">
+        <div class="consent-inner">
+            <div class="consent-text">This site uses IP-based region lookup to show local news. Do you accept this?</div>
+            <div class="consent-actions">
+                <button id="consent-accept" class="btn">Accept</button>
+                <button id="consent-decline" class="btn btn-muted">Decline</button>
+                <a href="#" id="consent-privacy" class="footer-link">Privacy</a>
+            </div>
+        </div>
+    </div>
+    <!-- Sources modal (lists all feeds from feeds.json) -->
+    <div id="sources-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="sources-title">
+        <div class="modal-content">
+            <button id="sources-close" class="modal-close" aria-label="Close sources dialog">×</button>
+            <h2 id="sources-title">News Sources</h2>
+            <p>This list shows all configured news feeds, grouped by country code.</p>
+            <div id="sources-content" style="text-transform:none; font-family:inherit; font-size:0.95rem; color:var(--text-color);"></div>
+        </div>
+    </div>
+
+    <!-- About modal -->
+    <div id="about-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="about-title">
+        <div class="modal-content">
+            <button id="about-close" class="modal-close" aria-label="Close about dialog">×</button>
+            <h2 id="about-title">About ARC-CLK</h2>
+            <p>ARC-CLK is an open-source project by Peter Risberg that combines a localized clock, market tickers and aggregated news feeds.
+            It's provided free to use. Contributions and forks are welcome; add a link to the repository in this modal or the project README.</p>
+            <p>License: MIT Last updated: 2026-01-06.</p>
+            <p>The app pulls public RSS/JSON feeds and third-party APIs feeds for markets. IP-based lookups are used only with your explicit consent. Advertising (Google Ads) is optional and will only load after consent.</p>
+            <P>H-k the planet! Be free, be safe! <Strong>PICE!</Strong></P>
+            <P> ← L RERTURN</P>
+            <p><strong>PRESS PLAY ON TAPE</strong></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -2,7 +2,7 @@
   "name": "ARC-CLK",
   "short_name": "ARC-CLK",
   "description": "A financial and news web application with localized clock and market tickers.",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone", 
   "icons": [
     {

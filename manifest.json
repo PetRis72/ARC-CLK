@@ -6,12 +6,12 @@
   "display": "standalone", 
   "icons": [
     {
-      "src": "icon.ico",
+      "src": "/assets/img/icon.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
-      "src": "icon512.png",
+      "src": "/assets/img/icon512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

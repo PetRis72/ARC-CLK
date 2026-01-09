@@ -1,6 +1,8 @@
 ARC-CLK | Financial & News Edition
 ARC-CLK is a high-precision, architectural digital clock designed for professionals who need real-time market data and global news at a glance. Built with a minimalist aesthetic, it transforms your browser or device into a dedicated financial dashboard.
 
+Git-Project URL: https://petris72.github.io/ARC-CLK/
+
 🚀 Key Features
 Architectural Clock: Clean, high-contrast display of time, day, and date.
 
